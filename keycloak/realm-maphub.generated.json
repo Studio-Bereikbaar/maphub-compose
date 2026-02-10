@@ -1,0 +1,41 @@
+{
+  "realm": "maphub",
+  "enabled": true,
+  "registrationAllowed": true,
+  "verifyEmail": false,
+  "loginWithEmailAllowed": true,
+  "resetPasswordAllowed": true,
+  "rememberMe": true,
+  "displayName": "MapHub",
+  "displayNameHtml": "<strong>MapHub</strong>",
+  "roles": {
+    "realm": [
+      { "name": "app-admin", "description": "Application administrator" }
+    ]
+  },
+  "users": [
+    {
+      "username": "admin@local",
+      "email": "admin@local",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [ { "type": "password", "value": "admin", "temporary": true } ],
+      "realmRoles": ["app-admin"]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "maphub-front",
+      "publicClient": true,
+      "protocol": "openid-connect",
+      "directAccessGrantsEnabled": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "rootUrl": "https://maphub.studiobereikbaar.nl",
+      "baseUrl": "/",
+      "redirectUris": [ "https://maphub.studiobereikbaar.nl/*" ],
+      "webOrigins": [ "https://maphub.studiobereikbaar.nl" ]
+    }
+  ]
+}
