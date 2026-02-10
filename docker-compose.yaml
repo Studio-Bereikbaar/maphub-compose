@@ -1,7 +1,8 @@
 version: "3.9"
 
-# Coolify deployment — Traefik service removed (Coolify provides its own proxy).
-# Configure domain routing + SSL in the Coolify UI per service.
+# Coolify deployment — Traefik removed (Coolify provides its own proxy).
+# Set FRONT_URL, API_URL, AUTH_URL as full URLs in Coolify env vars.
+# Example: FRONT_URL=https://maphub.studiobereikbaar.nl
 
 services:
   db:
@@ -38,8 +39,8 @@ services:
     command: [ "sh", "-c", "alembic upgrade head && hypercorn app:app --bind 0.0.0.0:8000 --worker-class asyncio --workers 2" ]
     environment:
       ALLOWED_ORIGINS: "*"
-      API_URL: https://${API_DOMAIN}
-      FRONT_END_URL: https://${FRONT_DOMAIN}
+      API_URL: ${API_URL}
+      FRONT_END_URL: ${FRONT_URL}
       STAGE: ${STAGE:-local}
 
       # Database
@@ -58,9 +59,9 @@ services:
 
       # Keycloak
       AUTH_PROVIDER: keycloak
-      AUTH_HOST: https://${AUTH_DOMAIN}
+      AUTH_HOST: ${AUTH_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM:-maphub}
-      KEYCLOAK_ISSUER: https://${AUTH_DOMAIN}/realms/${KEYCLOAK_REALM:-maphub}
+      KEYCLOAK_ISSUER: ${AUTH_URL}/realms/${KEYCLOAK_REALM:-maphub}
 
       # SMTP for API (optional)
       MAIL_SERVER: ${MAIL_SERVER}
@@ -89,18 +90,18 @@ services:
     environment:
       # GENERAL
       NEXT_PUBLIC_ENV: production
-      NEXT_PUBLIC_BASE_URL: https://${FRONT_DOMAIN}
+      NEXT_PUBLIC_BASE_URL: ${FRONT_URL}
 
       # MAPBOX
       NEXT_PUBLIC_MAPBOX_TOKEN: ${MAPBOX_TOKEN}
 
       # MAPHUB
-      NEXT_PUBLIC_MAPHUB_API_URL: https://${API_DOMAIN}
+      NEXT_PUBLIC_MAPHUB_API_URL: ${API_URL}
 
       # AUTH
       NEXT_PUBLIC_AUTH_PROVIDER: keycloak
-      NEXTAUTH_URL: https://${FRONT_DOMAIN}
-      KEYCLOAK_HOST: https://${AUTH_DOMAIN}
+      NEXTAUTH_URL: ${FRONT_URL}
+      KEYCLOAK_HOST: ${AUTH_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM:-maphub}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID:-maphub-frontend}
       NEXTAUTH_SECRET: ${FRONT_AUTH_SECRET}
@@ -121,7 +122,7 @@ services:
       KC_HTTP_ENABLED: "true"
       KC_PROXY: edge
       KC_PROXY_HEADERS: xforwarded
-      KC_HOSTNAME_URL: https://${AUTH_DOMAIN}
+      KC_HOSTNAME_URL: ${AUTH_URL}
       KC_HOSTNAME_STRICT: "false"
     volumes:
       - keycloak-data:/opt/keycloak/data
