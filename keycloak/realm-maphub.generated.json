@@ -25,7 +25,7 @@
   ],
   "clients": [
     {
-      "clientId": "maphub-front",
+      "clientId": "maphub-frontend",
       "publicClient": true,
       "protocol": "openid-connect",
       "directAccessGrantsEnabled": false,
