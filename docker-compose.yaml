@@ -132,11 +132,6 @@ services:
       timeout: 5s
       retries: 10
 
-networks:
-  default:
-    name: coolify
-    external: true
-
 volumes:
   db-data:
   minio-data:
