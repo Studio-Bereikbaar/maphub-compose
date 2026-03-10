@@ -127,6 +127,7 @@ services:
     volumes:
       - keycloak-data:/opt/keycloak/data
       - ./keycloak/realm-maphub.generated.json:/opt/keycloak/data/import/import.json:ro
+      - /opt/keycloak-themes/maphub-sb:/opt/keycloak/themes/maphub-sb:ro
     healthcheck:
       test: [ "CMD-SHELL", "timeout 2 bash -lc '</dev/tcp/localhost/8080'" ]
       interval: 10s
