@@ -89,6 +89,8 @@ services:
 
   front:
     image: noxdecima/maphub-front:latest
+    volumes:
+      - /opt/maphub-patches/front-next-build:/app/.next:ro
     environment:
       # GENERAL
       NEXT_PUBLIC_ENV: production
