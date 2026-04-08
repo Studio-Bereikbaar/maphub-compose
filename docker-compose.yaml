@@ -37,6 +37,8 @@ services:
   api:
     image: noxdecima/maphub-api:latest
     command: [ "sh", "-c", "alembic upgrade head && hypercorn app:app --bind 0.0.0.0:8000 --worker-class asyncio --workers 2" ]
+    volumes:
+      - /opt/maphub-patches/process_vector.py:/app/tasks/process_vector.py:ro
     environment:
       ALLOWED_ORIGINS: "*"
       API_URL: ${API_URL}
