@@ -21,7 +21,8 @@ services:
       timeout: 10s
 
   minio:
-    image: minio/minio:latest
+    # Pinned 2026-05-19 (hardening A1) — was the dormant .pre-A1-bak fix.
+    image: minio/minio@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
@@ -35,7 +36,8 @@ services:
       timeout: 5s
 
   api:
-    image: noxdecima/maphub-api:latest
+    # Pinned 2026-05-19 (hardening A1, April-2026-RCE-vector closure).
+    image: noxdecima/maphub-api@sha256:4f0c622d3c1df96665ff3be3c9d2d438f54aecae0b95a7e9490dfd000e59019b
     command: [ "sh", "-c", "alembic upgrade head && hypercorn app:app --bind 0.0.0.0:8000 --worker-class asyncio --workers 2" ]
     volumes:
       - /opt/maphub-patches/process_vector.py:/app/tasks/process_vector.py:ro
@@ -88,7 +90,8 @@ services:
         condition: service_healthy
 
   front:
-    image: noxdecima/maphub-front:latest
+    # Pinned 2026-05-19 (hardening A1, April-2026-RCE-vector closure).
+    image: noxdecima/maphub-front@sha256:a463623f6a0517dbe84c332554d9ba322cfdb0d7f814af93938dc98205333517
     volumes:
       - /opt/maphub-patches/front-next-build:/app/.next:ro
     environment:
